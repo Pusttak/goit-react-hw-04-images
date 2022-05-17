@@ -52,23 +52,23 @@ const ImageGallery = ({ imageName }) => {
   return (
     <>
       {images.length !== 0 && (
-        <ul className={s.ImageGallery}>
-          {images.map(({ id, webformatURL, largeImageURL, tags }) => (
-            <ImageGalleryItem
-              key={id}
-              smallImage={webformatURL}
-              tags={tags}
-              onClick={() => {
-                setActiveImg(largeImageURL);
-                toggleModal();
-              }}
-            />
-          ))}
-        </ul>
-      )}
-      {loader && <Loader />}
-      {images.length !== 0 && (
-        <LoadMoreButton onClick={() => setPage(page + 1)} />
+        <>
+          <ul className={s.ImageGallery}>
+            {images.map(({ id, webformatURL, largeImageURL, tags }) => (
+              <ImageGalleryItem
+                key={id}
+                smallImage={webformatURL}
+                tags={tags}
+                onClick={() => {
+                  setActiveImg(largeImageURL);
+                  toggleModal();
+                }}
+              />
+            ))}
+          </ul>
+          {loader && <Loader />}
+          <LoadMoreButton onClick={() => setPage(page + 1)} />
+        </>
       )}
       {showModal && (
         <Modal onClose={toggleModal}>
