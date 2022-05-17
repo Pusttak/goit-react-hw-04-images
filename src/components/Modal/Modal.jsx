@@ -1,44 +1,37 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { MdOutlineClose } from 'react-icons/md';
 import s from './Modal.module.scss';
 
-class Modal extends Component {
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
-  }
+const Modal = ({ onClose, children }) => {
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  });
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
-  }
-
-  handleKeyDown = evt => {
+  const handleKeyDown = evt => {
     if (evt.code === 'Escape') {
-      this.props.onClose();
+      onClose();
     }
   };
 
-  handleBackdropClick = evt => {
+  const handleBackdropClick = evt => {
     if (evt.target === evt.currentTarget) {
-      this.props.onClose();
+      onClose();
     }
   };
 
-  render() {
-    return (
-      <div className={s.Overlay} onClick={this.handleBackdropClick}>
-        <button
-          className={s.closeButton}
-          type="button"
-          onClick={this.props.onClose}
-        >
-          <MdOutlineClose size="30px" color="fff" />
-        </button>
-        <div className={s.Modal}>{this.props.children}</div>
-      </div>
-    );
-  }
-}
+  return (
+    <div className={s.Overlay} onClick={handleBackdropClick}>
+      <button className={s.closeButton} type="button" onClick={onClose}>
+        <MdOutlineClose size="30px" color="fff" />
+      </button>
+      <div className={s.Modal}>{children}</div>
+    </div>
+  );
+};
 
 export default Modal;
 
