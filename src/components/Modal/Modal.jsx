@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { MdOutlineClose } from 'react-icons/md';
 import s from './Modal.module.scss';
 
-const Modal = ({ onClose, children }) => {
+const Modal = ({ closeModal, children }) => {
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     return () => {
@@ -13,19 +13,19 @@ const Modal = ({ onClose, children }) => {
 
   const handleKeyDown = evt => {
     if (evt.code === 'Escape') {
-      onClose();
+      closeModal();
     }
   };
 
   const handleBackdropClick = evt => {
     if (evt.target === evt.currentTarget) {
-      onClose();
+      closeModal();
     }
   };
 
   return (
     <div className={s.Overlay} onClick={handleBackdropClick}>
-      <button className={s.closeButton} type="button" onClick={onClose}>
+      <button className={s.closeButton} type="button" onClick={closeModal}>
         <MdOutlineClose size="30px" color="fff" />
       </button>
       <div className={s.Modal}>{children}</div>
@@ -36,5 +36,5 @@ const Modal = ({ onClose, children }) => {
 export default Modal;
 
 Modal.propTypes = {
-  onClose: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
