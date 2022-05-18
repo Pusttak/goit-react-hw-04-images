@@ -81,7 +81,9 @@ const App = () => {
         />
       )}
       {loader && <Loader />}
-      {loadMore && <LoadMoreButton onClick={() => setPage(page + 1)} />}
+      {loadMore && images.length !== 0 && (
+        <LoadMoreButton onClick={() => setPage(page + 1)} />
+      )}
       {showModal && (
         <Modal closeModal={toggleModal}>
           <img src={activeImg} alt="" />
