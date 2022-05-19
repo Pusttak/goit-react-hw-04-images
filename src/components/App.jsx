@@ -15,11 +15,11 @@ const App = () => {
   const [imageName, setImageName] = useState('');
   const [page, setPage] = useState(1);
   const [loader, setLoader] = useState(false);
-  const [activeImg, setActiveImg] = useState('');
   const [images, setImages] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [activeImg, setActiveImg] = useState('');
   const [totalImages, setTotalImages] = useState(0);
   const [loadMore, setLoadMore] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const url = `${BASE_URL}?key=${API_KEY}&q=${imageName}&page=${page}&per_page=12&image_type=photo&orientation=horizontal`;
 
@@ -35,13 +35,13 @@ const App = () => {
 
     fetchGallery(url)
       .then(images => {
-        setTotalImages(images.totalHits);
         setImages(prevImages => [...prevImages, ...images.hits]);
         if (page === 1) {
           if (images.totalHits === 0) {
             toast.error('Nothing found');
           } else {
             toast.success(`Found ${images.totalHits} images`);
+            setTotalImages(images.totalHits);
           }
         }
       })
@@ -61,8 +61,8 @@ const App = () => {
     setShowModal(!showModal);
   }
 
-  const onSubmit = imageName => {
-    setImageName(imageName);
+  const onSubmit = imgName => {
+    setImageName(imgName);
   };
 
   const setModalImg = imgUrl => {
@@ -81,7 +81,7 @@ const App = () => {
         />
       )}
       {loader && <Loader />}
-      {loadMore && images.length !== 0 && (
+      {images.length !== 0 && loadMore && (
         <LoadMoreButton onClick={() => setPage(page + 1)} />
       )}
       {showModal && (
