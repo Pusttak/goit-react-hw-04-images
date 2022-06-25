@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import fetchGallery from 'services/gallery-api';
+import API from '../services/gallery-api';
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
 import Loader from './Loader';
 import LoadMoreButton from './LoadMoreButton';
 import Modal from './Modal';
 import s from './App.module.css';
-
-const API_KEY = '26702272-2d7e64543fb5f8670261a42e5';
-const BASE_URL = 'https://pixabay.com/api/';
 
 const App = () => {
   const [imageName, setImageName] = useState('');
@@ -21,8 +18,6 @@ const App = () => {
   const [loadMore, setLoadMore] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const url = `${BASE_URL}?key=${API_KEY}&q=${imageName}&page=${page}&per_page=12&image_type=photo&orientation=horizontal`;
-
   useEffect(() => {
     if (imageName === '') return;
     setImages([]);
@@ -33,7 +28,7 @@ const App = () => {
     if (imageName === '') return;
     setLoader(true);
 
-    fetchGallery(url)
+    API(imageName, page)
       .then(images => {
         setImages(prevImages => [...prevImages, ...images.hits]);
         if (page === 1) {
@@ -50,8 +45,8 @@ const App = () => {
         setLoader(false);
       });
 
-    fetchGallery(url);
-  }, [imageName, url, page]);
+    API(imageName, page);
+  }, [imageName, page]);
 
   useEffect(() => {
     setLoadMore(totalImages / 12 > page);
